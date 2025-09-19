@@ -6,7 +6,21 @@ namespace ERP_AI.Data
 {
     public class Company : BaseEntity { public string Name { get; set; } = string.Empty; }
     public class User : BaseEntity { public string Username { get; set; } = string.Empty; }
-    public class Account : BaseEntity { public string Code { get; set; } = string.Empty; public string Name { get; set; } = string.Empty; }
+    public enum AccountType { Asset, Liability, Equity, Revenue, Expense }
+
+    public class Account : BaseEntity
+    {
+        public string Code { get; set; } = string.Empty;
+        public string Name { get; set; } = string.Empty;
+        public AccountType Type { get; set; }
+        public Guid? ParentId { get; set; }
+        public Account? Parent { get; set; }
+        public List<Account> Children { get; set; } = new();
+        public decimal Balance { get; set; }
+        public bool IsActive { get; set; } = true;
+        public bool IsSystem { get; set; } = false;
+        public string Usage { get; set; } = string.Empty; // e.g. Cash, Bank, Receivable, Payable
+    }
     public class Transaction : BaseEntity { public DateTime Date { get; set; } public ICollection<TransactionDetail> Details { get; set; } = new List<TransactionDetail>(); }
     public class TransactionDetail : BaseEntity { public Guid TransactionId { get; set; } public decimal Amount { get; set; } public bool IsDebit { get; set; } }
     public class Customer : BaseEntity { public string Name { get; set; } = string.Empty; }

@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\ERP_AI.Core\ERP_AI.Core.csproj" />
+    <ProjectReference Include="..\ERP_AI.Data\ERP_AI.Data.csproj" />
+    <ProjectReference Include="..\ERP_AI.Services\ERP_AI.Services.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+</Project>

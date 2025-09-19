@@ -1,0 +1,48 @@
+# Ignore Visual Studio temporary files, build results, and
+# user-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Ignore build output
+bin/
+obj/
+
+# Ignore NuGet packages
+*.nupkg
+# Ignore NuGet restore files
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Ignore VS Code settings
+.vscode/
+
+# Ignore logs
+*.log
+
+# Ignore test results
+TestResults/
+
+# Ignore other files
+*.vspscc
+*.vssscc
+*.dbmdl
+*.pdb
+*.cache
+*.zip
+*.vs/
+
+# Ignore Rider files
+.idea/
+*.sln.iml
+
+# Ignore Mac files
+.DS_Store
+
+# Ignore Windows Thumbs.db
+Thumbs.db
+
+# Ignore Copilot instructions
+.github/copilot-instructions.md

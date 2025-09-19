@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ERP_AI.Core;
+using System.Linq.Expressions;
 
 namespace ERP_AI.Data
 {
@@ -34,7 +35,36 @@ namespace ERP_AI.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Indexes, soft delete, audit, concurrency, seed data, etc. will be added here
+            // Soft delete global filter
+            foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+            {
+                if (typeof(Core.BaseEntity).IsAssignableFrom(entityType.ClrType))
+                {
+                    modelBuilder.Entity(entityType.ClrType).HasQueryFilter(GetIsDeletedFilter(entityType.ClrType));
+                }
+            }
+
+            // Audit trail: set UpdatedAt and UpdatedBy on save
+            // Concurrency: RowVersion
+            // Indexes for performance
+            modelBuilder.Entity<Company>().HasIndex(e => e.Name);
+            modelBuilder.Entity<Account>().HasIndex(e => e.Code);
+            modelBuilder.Entity<Customer>().HasIndex(e => e.Name);
+            modelBuilder.Entity<Vendor>().HasIndex(e => e.Name);
+
+            // Full-text search setup (SQLite FTS5)
+            // Example: modelBuilder.Entity<Account>().ToTable("Accounts", b => b.ExcludeFromMigrations());
+
+            // Seed data for chart of accounts
+            modelBuilder.Entity<Account>().HasData(new Account { Id = Guid.NewGuid(), Code = "1000", Name = "Cash" });
+        }
+
+        private static LambdaExpression GetIsDeletedFilter(Type entityType)
+        {
+            var param = Expression.Parameter(entityType, "e");
+            var prop = Expression.Property(param, "IsDeleted");
+            var condition = Expression.Equal(prop, Expression.Constant(false));
+            return Expression.Lambda(condition, param);
         }
     }
 }

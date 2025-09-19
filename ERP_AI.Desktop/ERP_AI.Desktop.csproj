@@ -17,6 +17,7 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageReference Include="RestSharp" Version="112.1.0" />
     <PackageReference Include="Serilog" Version="4.3.0" />
+    <PackageReference Include="FluentValidation" Version="11.7.2" />
   </ItemGroup>
 
   <PropertyGroup>

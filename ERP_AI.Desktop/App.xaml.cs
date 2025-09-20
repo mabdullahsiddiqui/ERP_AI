@@ -25,8 +25,8 @@ public partial class App : Application
         // Initialize ViewModelLocator
         ViewModelLocator.Init(services);
         
-        // Show Simple main window for Phase 4 demo
-        var mainWindow = new Views.SimpleMainWindow();
+        // Show Phase 5 dashboard for advanced features demo
+        var mainWindow = new Views.Phase5DashboardView();
         mainWindow.Show();
     }
     

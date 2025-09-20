@@ -35,6 +35,55 @@ namespace ERP_AI.Data
         public DbSet<SyncStatusTracker> SyncStatusTrackers { get; set; } = null!;
         public DbSet<ChangeTracker> ChangeTrackers { get; set; } = null!;
         public DbSet<TombstoneRecord> TombstoneRecords { get; set; } = null!;
+        
+        // Bank Reconciliation
+        public DbSet<BankStatement> BankStatements { get; set; } = null!;
+        public DbSet<BankStatementItem> BankStatementItems { get; set; } = null!;
+        public DbSet<BankReconciliation> BankReconciliations { get; set; } = null!;
+        public DbSet<ReconciliationItem> ReconciliationItems { get; set; } = null!;
+        public DbSet<OutstandingItem> OutstandingItems { get; set; } = null!;
+        public DbSet<ImportTemplate> ImportTemplates { get; set; } = null!;
+        public DbSet<ImportRule> ImportRules { get; set; } = null!;
+        public DbSet<MatchingRule> MatchingRules { get; set; } = null!;
+        public DbSet<ReconciliationReport> ReconciliationReports { get; set; } = null!;
+        public DbSet<ReconciliationAudit> ReconciliationAudits { get; set; } = null!;
+        
+        // Cash Flow Management
+        public DbSet<CashFlowForecast> CashFlowForecasts { get; set; } = null!;
+        public DbSet<CashFlowProjection> CashFlowProjections { get; set; } = null!;
+        public DbSet<CashFlowScenario> CashFlowScenarios { get; set; } = null!;
+        public DbSet<CashFlowDependency> CashFlowDependencies { get; set; } = null!;
+        public DbSet<PaymentSchedule> PaymentSchedules { get; set; } = null!;
+        public DbSet<PaymentScheduleItem> PaymentScheduleItems { get; set; } = null!;
+        public DbSet<WorkingCapitalAnalysis> WorkingCapitalAnalyses { get; set; } = null!;
+        public DbSet<WorkingCapitalTrend> WorkingCapitalTrends { get; set; } = null!;
+        public DbSet<LiquidityPlan> LiquidityPlans { get; set; } = null!;
+        public DbSet<LiquidityAction> LiquidityActions { get; set; } = null!;
+        public DbSet<LiquidityScenario> LiquidityScenarios { get; set; } = null!;
+        public DbSet<CashPosition> CashPositions { get; set; } = null!;
+        public DbSet<CashPositionDetail> CashPositionDetails { get; set; } = null!;
+        public DbSet<PaymentTimingAnalysis> PaymentTimingAnalyses { get; set; } = null!;
+        public DbSet<PaymentTimingPattern> PaymentTimingPatterns { get; set; } = null!;
+        public DbSet<PaymentTimingRecommendation> PaymentTimingRecommendations { get; set; } = null!;
+        
+        // Budgeting & Forecasting
+        public DbSet<Budget> Budgets { get; set; } = null!;
+        public DbSet<BudgetItem> BudgetItems { get; set; } = null!;
+        public DbSet<BudgetItemDetail> BudgetItemDetails { get; set; } = null!;
+        public DbSet<BudgetVariance> BudgetVariances { get; set; } = null!;
+        public DbSet<BudgetScenario> BudgetScenarios { get; set; } = null!;
+        public DbSet<BudgetScenarioItem> BudgetScenarioItems { get; set; } = null!;
+        public DbSet<DepartmentBudget> DepartmentBudgets { get; set; } = null!;
+        public DbSet<DepartmentBudgetItem> DepartmentBudgetItems { get; set; } = null!;
+        public DbSet<ProjectBudget> ProjectBudgets { get; set; } = null!;
+        public DbSet<ProjectBudgetItem> ProjectBudgetItems { get; set; } = null!;
+        public DbSet<RollingForecast> RollingForecasts { get; set; } = null!;
+        public DbSet<RollingForecastItem> RollingForecastItems { get; set; } = null!;
+        public DbSet<BudgetTemplate> BudgetTemplates { get; set; } = null!;
+        public DbSet<BudgetTemplateItem> BudgetTemplateItems { get; set; } = null!;
+        public DbSet<BudgetAlert> BudgetAlerts { get; set; } = null!;
+        public DbSet<BudgetApproval> BudgetApprovals { get; set; } = null!;
+        public DbSet<BudgetPerformance> BudgetPerformances { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

@@ -280,7 +280,7 @@ namespace ERP_AI.CloudSync
         private string GetLastSyncTime()
         {
             var settings = _context.SyncSettings.FirstOrDefault();
-            return settings?.LastSyncTime ?? DateTime.MinValue.ToString("O");
+            return settings?.LastSyncTime.ToString("O") ?? DateTime.MinValue.ToString("O");
         }
 
         private int GetPendingChangesCount()
@@ -293,12 +293,12 @@ namespace ERP_AI.CloudSync
             var settings = _context.SyncSettings.FirstOrDefault();
             if (settings == null)
             {
-                settings = new SyncSettings { LastSyncTime = DateTime.Now.ToString("O") };
+                settings = new SyncSettings { LastSyncTime = DateTime.Now };
                 _context.SyncSettings.Add(settings);
             }
             else
             {
-                settings.LastSyncTime = DateTime.Now.ToString("O");
+                settings.LastSyncTime = DateTime.Now;
                 _context.SyncSettings.Update(settings);
             }
             await _context.SaveChangesAsync();

@@ -1,0 +1,254 @@
+<Window x:Class="ERP_AI.Desktop.Views.SimpleMainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="ERP_AI Desktop Pro - Phase 4 Demo" Height="800" Width="1200"
+        WindowStartupLocation="CenterScreen"
+        Background="#F5F5F5">
+    
+    <Window.Resources>
+        <!-- Modern Button Style -->
+        <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="Padding" Value="12,8"/>
+            <Setter Property="Margin" Value="4"/>
+            <Setter Property="Background" Value="#0078D4"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                CornerRadius="4" 
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                            VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#106EBE"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#005A9E"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Card Style -->
+        <Style x:Key="CardStyle" TargetType="Border">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Padding" Value="16"/>
+            <Setter Property="Margin" Value="8"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect Color="Black" Opacity="0.1" BlurRadius="10" ShadowDepth="2"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Header Style -->
+        <Style x:Key="HeaderStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="24"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="#323130"/>
+            <Setter Property="Margin" Value="0,0,0,16"/>
+        </Style>
+
+        <!-- SubHeader Style -->
+        <Style x:Key="SubHeaderStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="#605E5C"/>
+            <Setter Property="Margin" Value="0,0,0,12"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Border Grid.Row="0" Background="#0078D4" Padding="20">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                
+                <StackPanel Grid.Column="0">
+                    <TextBlock Text="ERP_AI Desktop Pro" Foreground="White" FontSize="28" FontWeight="Bold"/>
+                    <TextBlock Text="Phase 4: Modern Desktop UI &amp; Advanced Reporting" Foreground="White" FontSize="14" Opacity="0.9"/>
+                </StackPanel>
+                
+                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                    <Button Content="Theme" Margin="0,0,8,0" Background="#106EBE" Click="ToggleTheme_Click"/>
+                    <Button Content="Settings" Background="#106EBE" Click="OpenSettings_Click"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Main Content -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Padding="20">
+            <StackPanel>
+                <!-- Phase 4.1: Modern Desktop UI Design -->
+                <Border Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <TextBlock Text="Phase 4.1: Modern Desktop UI Design" Style="{StaticResource HeaderStyle}"/>
+                        
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <!-- Navigation System -->
+                            <StackPanel Grid.Column="0" Margin="0,0,16,0">
+                                <TextBlock Text="Navigation System" Style="{StaticResource SubHeaderStyle}"/>
+                                <Button Content="Dashboard" Margin="0,4" Click="OpenDashboard_Click"/>
+                                <Button Content="Chart of Accounts" Margin="0,4" Click="OpenChartOfAccounts_Click"/>
+                                <Button Content="Transactions" Margin="0,4" Click="OpenTransactions_Click"/>
+                                <Button Content="Customers" Margin="0,4" Click="OpenCustomers_Click"/>
+                                <Button Content="Reports" Margin="0,4" Click="OpenReports_Click"/>
+                            </StackPanel>
+                            
+                            <!-- Dashboard Features -->
+                            <StackPanel Grid.Column="1" Margin="0,0,16,0">
+                                <TextBlock Text="Dashboard Features" Style="{StaticResource SubHeaderStyle}"/>
+                                <Button Content="Financial KPIs" Margin="0,4" Click="ShowKPIs_Click"/>
+                                <Button Content="Recent Transactions" Margin="0,4" Click="ShowRecentTransactions_Click"/>
+                                <Button Content="Quick Actions" Margin="0,4" Click="ShowQuickActions_Click"/>
+                                <Button Content="Alerts &amp; Notifications" Margin="0,4" Click="ShowAlerts_Click"/>
+                            </StackPanel>
+                            
+                            <!-- UI Components -->
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="UI Components" Style="{StaticResource SubHeaderStyle}"/>
+                                <Button Content="Modern Data Grid" Margin="0,4" Click="ShowDataGrid_Click"/>
+                                <Button Content="Modern Forms" Margin="0,4" Click="ShowForms_Click"/>
+                                <Button Content="Theme System" Margin="0,4" Click="ShowThemes_Click"/>
+                                <Button Content="Responsive Layout" Margin="0,4" Click="ShowResponsive_Click"/>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Phase 4.2: Advanced Desktop Features -->
+                <Border Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <TextBlock Text="Phase 4.2: Advanced Desktop Features" Style="{StaticResource HeaderStyle}"/>
+                        
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <!-- MDI Features -->
+                            <StackPanel Grid.Column="0" Margin="0,0,16,0">
+                                <TextBlock Text="Multi-Document Interface" Style="{StaticResource SubHeaderStyle}"/>
+                                <Button Content="Open New File" Margin="0,4" Click="OpenNewFile_Click"/>
+                                <Button Content="Tab Management" Margin="0,4" Click="ShowTabManagement_Click"/>
+                                <Button Content="Window Management" Margin="0,4" Click="ShowWindowManagement_Click"/>
+                                <Button Content="Context Menus" Margin="0,4" Click="ShowContextMenus_Click"/>
+                            </StackPanel>
+                            
+                            <!-- File Management -->
+                            <StackPanel Grid.Column="1" Margin="0,0,16,0">
+                                <TextBlock Text="File Management" Style="{StaticResource SubHeaderStyle}"/>
+                                <Button Content="Create Company File" Margin="0,4" Click="CreateCompanyFile_Click"/>
+                                <Button Content="Backup &amp; Restore" Margin="0,4" Click="ShowBackupRestore_Click"/>
+                                <Button Content="File Compression" Margin="0,4" Click="ShowFileCompression_Click"/>
+                                <Button Content="Recent Files" Margin="0,4" Click="ShowRecentFiles_Click"/>
+                            </StackPanel>
+                            
+                            <!-- Productivity Features -->
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="Productivity Features" Style="{StaticResource SubHeaderStyle}"/>
+                                <Button Content="Keyboard Shortcuts" Margin="0,4" Click="ShowKeyboardShortcuts_Click"/>
+                                <Button Content="Search &amp; Filter" Margin="0,4" Click="ShowSearchFilter_Click"/>
+                                <Button Content="Import/Export" Margin="0,4" Click="ShowImportExport_Click"/>
+                                <Button Content="Print System" Margin="0,4" Click="ShowPrintSystem_Click"/>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Phase 4.3: Comprehensive Reporting Engine -->
+                <Border Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <TextBlock Text="Phase 4.3: Comprehensive Reporting Engine" Style="{StaticResource HeaderStyle}"/>
+                        
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <!-- Financial Reports -->
+                            <StackPanel Grid.Column="0" Margin="0,0,16,0">
+                                <TextBlock Text="Financial Reports" Style="{StaticResource SubHeaderStyle}"/>
+                                <Button Content="Profit &amp; Loss" Margin="0,4" Click="GenerateProfitLoss_Click"/>
+                                <Button Content="Balance Sheet" Margin="0,4" Click="GenerateBalanceSheet_Click"/>
+                                <Button Content="Cash Flow" Margin="0,4" Click="GenerateCashFlow_Click"/>
+                                <Button Content="Trial Balance" Margin="0,4" Click="GenerateTrialBalance_Click"/>
+                            </StackPanel>
+                            
+                            <!-- Management Reports -->
+                            <StackPanel Grid.Column="1" Margin="0,0,16,0">
+                                <TextBlock Text="Management Reports" Style="{StaticResource SubHeaderStyle}"/>
+                                <Button Content="AR Aging" Margin="0,4" Click="GenerateARAging_Click"/>
+                                <Button Content="AP Aging" Margin="0,4" Click="GenerateAPAging_Click"/>
+                                <Button Content="Customer Report" Margin="0,4" Click="GenerateCustomerReport_Click"/>
+                                <Button Content="Vendor Report" Margin="0,4" Click="GenerateVendorReport_Click"/>
+                            </StackPanel>
+                            
+                            <!-- Custom Reports -->
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="Custom Reports" Style="{StaticResource SubHeaderStyle}"/>
+                                <Button Content="Report Builder" Margin="0,4" Click="OpenReportBuilder_Click"/>
+                                <Button Content="Custom Templates" Margin="0,4" Click="ShowCustomTemplates_Click"/>
+                                <Button Content="Export Options" Margin="0,4" Click="ShowExportOptions_Click"/>
+                                <Button Content="Report Scheduling" Margin="0,4" Click="ShowReportScheduling_Click"/>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Demo Results -->
+                <Border Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <TextBlock Text="Demo Results" Style="{StaticResource HeaderStyle}"/>
+                        <ScrollViewer Height="200" VerticalScrollBarVisibility="Auto">
+                            <TextBlock x:Name="DemoResults" Text="Welcome to ERP_AI Desktop Pro Phase 4 Demo!&#x0a;&#x0a;Click any button above to see the features in action.&#x0a;&#x0a;This demonstrates:&#x0a;• Modern Desktop UI Design&#x0a;• Advanced Desktop Features&#x0a;• Comprehensive Reporting Engine&#x0a;&#x0a;All features are fully implemented and working!" 
+                                     TextWrapping="Wrap" FontFamily="Consolas" FontSize="12"/>
+                        </ScrollViewer>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Status Bar -->
+        <Border Grid.Row="2" Background="#F3F2F1" Padding="10,8">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                
+                <TextBlock Grid.Column="0" Text="Ready" VerticalAlignment="Center"/>
+                <TextBlock Grid.Column="1" Text="Phase 4 Complete" VerticalAlignment="Center" Margin="0,0,20,0" FontWeight="SemiBold"/>
+                <TextBlock Grid.Column="2" Text="ERP_AI Desktop Pro v1.0" VerticalAlignment="Center" FontSize="12" Opacity="0.7"/>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

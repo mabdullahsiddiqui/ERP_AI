@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using ERP_AI.Core;
 using ERP_AI.Data;
 using ERP_AI.Services;
+using ERP_AI.Desktop.Services;
 
 namespace ERP_AI.Desktop;
 
@@ -23,6 +24,10 @@ public partial class App : Application
         
         // Initialize ViewModelLocator
         ViewModelLocator.Init(services);
+        
+        // Show Simple main window for Phase 4 demo
+        var mainWindow = new Views.SimpleMainWindow();
+        mainWindow.Show();
     }
     
     private void ConfigureServices(ServiceCollection services)
@@ -36,6 +41,7 @@ public partial class App : Application
         // Register Services
         services.AddScoped<IPdfService, PdfService>();
         services.AddScoped<IReportingService, ReportingService>();
+        services.AddSingleton<IThemeService, ThemeService>();
         
         // Register ViewModels
         services.AddTransient<ViewModels.AccountListViewModel>();

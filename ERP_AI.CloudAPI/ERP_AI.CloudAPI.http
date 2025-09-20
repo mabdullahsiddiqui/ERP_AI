@@ -1,0 +1,6 @@
+@ERP_AI.CloudAPI_HostAddress = http://localhost:5004
+
+GET {{ERP_AI.CloudAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

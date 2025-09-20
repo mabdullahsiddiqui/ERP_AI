@@ -37,7 +37,7 @@ namespace ERP_AI.CloudSync
                 {
                     foreach (var param in parameters)
                     {
-                        request.AddParameter(param.Key, param.Value);
+                        request.AddParameter(param.Key, param.Value, ParameterType.QueryString);
                     }
                 }
 
@@ -47,7 +47,7 @@ namespace ERP_AI.CloudSync
                     IsSuccess = response.IsSuccessful,
                     Data = response.Data,
                     ErrorMessage = response.ErrorMessage,
-                    StatusCode = response.StatusCode
+                    StatusCode = (int)response.StatusCode
                 };
             }
             catch (Exception ex)
@@ -74,7 +74,7 @@ namespace ERP_AI.CloudSync
                     IsSuccess = response.IsSuccessful,
                     Data = response.Data,
                     ErrorMessage = response.ErrorMessage,
-                    StatusCode = response.StatusCode
+                    StatusCode = (int)response.StatusCode
                 };
             }
             catch (Exception ex)
@@ -101,7 +101,7 @@ namespace ERP_AI.CloudSync
                     IsSuccess = response.IsSuccessful,
                     Data = response.Data,
                     ErrorMessage = response.ErrorMessage,
-                    StatusCode = response.StatusCode
+                    StatusCode = (int)response.StatusCode
                 };
             }
             catch (Exception ex)
@@ -127,7 +127,7 @@ namespace ERP_AI.CloudSync
                     IsSuccess = response.IsSuccessful,
                     Data = response.Data,
                     ErrorMessage = response.ErrorMessage,
-                    StatusCode = response.StatusCode
+                    StatusCode = (int)response.StatusCode
                 };
             }
             catch (Exception ex)

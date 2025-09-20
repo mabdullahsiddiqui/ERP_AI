@@ -140,10 +140,64 @@ namespace ERP_AI.Data
     public class Payment : BaseEntity { public Guid AccountId { get; set; } public decimal Amount { get; set; } }
     public class BankAccount : BaseEntity { public string AccountNumber { get; set; } = string.Empty; }
     public class BankTransaction : BaseEntity { public Guid BankAccountId { get; set; } public decimal Amount { get; set; } }
-    // Sync-related
-    public class SyncLog : BaseEntity { public string Operation { get; set; } = string.Empty; }
-    public class ConflictResolution : BaseEntity { public string ConflictType { get; set; } = string.Empty; }
-    public class CloudMapping : BaseEntity { public Guid LocalId { get; set; } public string CloudId { get; set; } = string.Empty; }
-    public class SyncQueue : BaseEntity { public string EntityType { get; set; } = string.Empty; }
-    public class SyncSettings : BaseEntity { public bool AutoSync { get; set; } }
+    // Sync-related entities with comprehensive properties
+    public class SyncLog : BaseEntity 
+    { 
+        public string Operation { get; set; } = string.Empty;
+        public string EntityType { get; set; } = string.Empty;
+        public Guid EntityId { get; set; }
+        public string Details { get; set; } = string.Empty;
+        public string Status { get; set; } = "Success";
+        public DateTime SyncTime { get; set; } = DateTime.UtcNow;
+    }
+    
+    public class ConflictResolution : BaseEntity 
+    { 
+        public string ConflictType { get; set; } = string.Empty;
+        public string EntityType { get; set; } = string.Empty;
+        public Guid EntityId { get; set; }
+        public string LocalData { get; set; } = string.Empty;
+        public string CloudData { get; set; } = string.Empty;
+        public string Resolution { get; set; } = string.Empty;
+        public DateTime ResolvedAt { get; set; }
+        public string Status { get; set; } = "Pending";
+        public string ResolvedBy { get; set; } = string.Empty;
+    }
+    
+    public class CloudMapping : BaseEntity 
+    { 
+        public Guid LocalId { get; set; }
+        public string CloudId { get; set; } = string.Empty;
+        public string EntityType { get; set; } = string.Empty;
+        public DateTime LastSynced { get; set; }
+        public new string SyncStatus { get; set; } = "Pending";
+    }
+    
+    public class SyncQueue : BaseEntity 
+    { 
+        public string EntityType { get; set; } = string.Empty;
+        public Guid EntityId { get; set; }
+        public string Operation { get; set; } = string.Empty; // Create, Update, Delete
+        public string EntityData { get; set; } = string.Empty;
+        public int Priority { get; set; } = 1;
+        public int RetryCount { get; set; } = 0;
+        public DateTime NextRetry { get; set; }
+        public string Status { get; set; } = "Pending";
+        public string ErrorMessage { get; set; } = string.Empty;
+    }
+    
+    public class SyncSettings : BaseEntity 
+    { 
+        public bool AutoSync { get; set; } = true;
+        public DateTime LastSyncTime { get; set; }
+        public int SyncIntervalMinutes { get; set; } = 30;
+        public bool SyncOnStartup { get; set; } = true;
+        public bool SyncOnShutdown { get; set; } = true;
+        public string ServerUrl { get; set; } = string.Empty;
+        public string ApiKey { get; set; } = string.Empty;
+        public string UserId { get; set; } = string.Empty;
+        public string CompanyId { get; set; } = string.Empty;
+        public bool EnableConflictResolution { get; set; } = true;
+        public string ConflictResolutionStrategy { get; set; } = "UserChoice";
+    }
 }

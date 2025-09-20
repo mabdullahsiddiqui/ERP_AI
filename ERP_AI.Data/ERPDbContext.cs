@@ -31,6 +31,10 @@ namespace ERP_AI.Data
         public DbSet<CloudMapping> CloudMappings { get; set; } = null!;
         public DbSet<SyncQueue> SyncQueues { get; set; } = null!;
         public DbSet<SyncSettings> SyncSettings { get; set; } = null!;
+        // Phase 3 sync entities
+        public DbSet<SyncStatusTracker> SyncStatusTrackers { get; set; } = null!;
+        public DbSet<ChangeTracker> ChangeTrackers { get; set; } = null!;
+        public DbSet<TombstoneRecord> TombstoneRecords { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

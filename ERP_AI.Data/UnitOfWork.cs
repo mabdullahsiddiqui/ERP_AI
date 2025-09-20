@@ -25,6 +25,9 @@ namespace ERP_AI.Data
         IRepository<CloudMapping> CloudMappings { get; }
         IRepository<SyncQueue> SyncQueues { get; }
         IRepository<SyncSettings> SyncSettings { get; }
+        IRepository<SyncStatusTracker> SyncStatusTrackers { get; }
+        IRepository<ChangeTracker> ChangeTrackers { get; }
+        IRepository<TombstoneRecord> TombstoneRecords { get; }
         Task<int> SaveChangesAsync();
     }
 
@@ -50,6 +53,9 @@ namespace ERP_AI.Data
         public IRepository<CloudMapping> CloudMappings { get; }
         public IRepository<SyncQueue> SyncQueues { get; }
         public IRepository<SyncSettings> SyncSettings { get; }
+        public IRepository<SyncStatusTracker> SyncStatusTrackers { get; }
+        public IRepository<ChangeTracker> ChangeTrackers { get; }
+        public IRepository<TombstoneRecord> TombstoneRecords { get; }
 
         public UnitOfWork(ERPDbContext context)
         {
@@ -73,6 +79,9 @@ namespace ERP_AI.Data
             CloudMappings = new Repository<CloudMapping>(context);
             SyncQueues = new Repository<SyncQueue>(context);
             SyncSettings = new Repository<SyncSettings>(context);
+            SyncStatusTrackers = new Repository<SyncStatusTracker>(context);
+            ChangeTrackers = new Repository<ChangeTracker>(context);
+            TombstoneRecords = new Repository<TombstoneRecord>(context);
         }
 
         public async Task<int> SaveChangesAsync() => await _context.SaveChangesAsync();

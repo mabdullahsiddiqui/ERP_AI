@@ -1,5 +1,6 @@
 using System.Windows.Controls;
 using ERP_AI.Desktop.ViewModels;
+using ERP_AI.Core;
 
 namespace ERP_AI.Desktop.Views
 {
@@ -7,7 +8,7 @@ namespace ERP_AI.Desktop.Views
     {
         public AccountReportView()
         {
-            DataContext = new AccountReportViewModel();
+            DataContext = ViewModelLocator.Get<AccountReportViewModel>();
         }
 
     }

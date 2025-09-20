@@ -4,7 +4,6 @@
     <ProjectReference Include="..\ERP_AI.Core\ERP_AI.Core.csproj" />
     <ProjectReference Include="..\ERP_AI.Data\ERP_AI.Data.csproj" />
     <ProjectReference Include="..\ERP_AI.Services\ERP_AI.Services.csproj" />
-    <ProjectReference Include="..\ERP_AI.CloudSync\ERP_AI.CloudSync.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -21,6 +20,8 @@
     <PackageReference Include="RestSharp" Version="112.1.0" />
     <PackageReference Include="Serilog" Version="4.3.0" />
     <PackageReference Include="FluentValidation" Version="11.7.2" />
+    <PackageReference Include="QuestPDF" Version="2024.12.4" />
+    <PackageReference Include="iTextSharp" Version="5.5.13.3" />
   </ItemGroup>
 
   <PropertyGroup>

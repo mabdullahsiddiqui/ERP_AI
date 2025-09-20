@@ -17,10 +17,14 @@ namespace ERP_AI.Data
         public DbSet<Customer> Customers { get; set; } = null!;
         public DbSet<Vendor> Vendors { get; set; } = null!;
         public DbSet<Invoice> Invoices { get; set; } = null!;
+        public DbSet<InvoiceItem> InvoiceItems { get; set; } = null!;
         public DbSet<Bill> Bills { get; set; } = null!;
+        public DbSet<BillItem> BillItems { get; set; } = null!;
         public DbSet<Payment> Payments { get; set; } = null!;
         public DbSet<BankAccount> BankAccounts { get; set; } = null!;
         public DbSet<BankTransaction> BankTransactions { get; set; } = null!;
+        public DbSet<Currency> Currencies { get; set; } = null!;
+        public DbSet<ExchangeRate> ExchangeRates { get; set; } = null!;
         // Sync-related entities
         public DbSet<SyncLog> SyncLogs { get; set; } = null!;
         public DbSet<ConflictResolution> ConflictResolutions { get; set; } = null!;

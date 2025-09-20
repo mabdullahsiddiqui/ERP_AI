@@ -21,12 +21,122 @@ namespace ERP_AI.Data
         public bool IsSystem { get; set; } = false;
         public string Usage { get; set; } = string.Empty; // e.g. Cash, Bank, Receivable, Payable
     }
-    public class Transaction : BaseEntity { public DateTime Date { get; set; } public ICollection<TransactionDetail> Details { get; set; } = new List<TransactionDetail>(); }
-    public class TransactionDetail : BaseEntity { public Guid TransactionId { get; set; } public decimal Amount { get; set; } public bool IsDebit { get; set; } }
-    public class Customer : BaseEntity { public string Name { get; set; } = string.Empty; }
-    public class Vendor : BaseEntity { public string Name { get; set; } = string.Empty; }
-    public class Invoice : BaseEntity { public Guid CustomerId { get; set; } public decimal Total { get; set; } }
-    public class Bill : BaseEntity { public Guid VendorId { get; set; } public decimal Total { get; set; } }
+    public class Transaction : BaseEntity
+    {
+        public DateTime Date { get; set; }
+        public string Reference { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
+        public string Status { get; set; } = "Draft"; // Draft, Posted, Void
+        public decimal TotalDebits { get; set; }
+        public decimal TotalCredits { get; set; }
+        public bool IsBalanced => TotalDebits == TotalCredits;
+        public ICollection<TransactionDetail> Details { get; set; } = new List<TransactionDetail>();
+    }
+
+    public class TransactionDetail : BaseEntity
+    {
+        public Guid TransactionId { get; set; }
+        public Transaction? Transaction { get; set; }
+        public Guid AccountId { get; set; }
+        public Account? Account { get; set; }
+        public decimal Amount { get; set; }
+        public bool IsDebit { get; set; }
+        public string Description { get; set; } = string.Empty;
+    }
+    public class Customer : BaseEntity
+    {
+        public string Name { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
+        public string Phone { get; set; } = string.Empty;
+        public string Address { get; set; } = string.Empty;
+        public string City { get; set; } = string.Empty;
+        public string State { get; set; } = string.Empty;
+        public string ZipCode { get; set; } = string.Empty;
+        public string Country { get; set; } = string.Empty;
+        public decimal CreditLimit { get; set; }
+        public decimal CurrentBalance { get; set; }
+        public string PaymentTerms { get; set; } = string.Empty; // e.g., "Net 30", "Cash on Delivery"
+        public bool IsActive { get; set; } = true;
+        public string Notes { get; set; } = string.Empty;
+    }
+
+    public class Vendor : BaseEntity
+    {
+        public string Name { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
+        public string Phone { get; set; } = string.Empty;
+        public string Address { get; set; } = string.Empty;
+        public string City { get; set; } = string.Empty;
+        public string State { get; set; } = string.Empty;
+        public string ZipCode { get; set; } = string.Empty;
+        public string Country { get; set; } = string.Empty;
+        public string TaxId { get; set; } = string.Empty;
+        public string PaymentTerms { get; set; } = string.Empty; // e.g., "Net 15", "Net 30"
+        public bool IsActive { get; set; } = true;
+        public string Notes { get; set; } = string.Empty;
+    }
+
+    public class Invoice : BaseEntity
+    {
+        public Guid CustomerId { get; set; }
+        public Customer? Customer { get; set; }
+        public string InvoiceNumber { get; set; } = string.Empty;
+        public DateTime InvoiceDate { get; set; } = DateTime.Now;
+        public DateTime DueDate { get; set; }
+        public decimal Subtotal { get; set; }
+        public decimal TaxAmount { get; set; }
+        public decimal Total { get; set; }
+        public decimal PaidAmount { get; set; }
+        public decimal Balance { get; set; }
+        public string Status { get; set; } = "Draft"; // Draft, Sent, Paid, Overdue, Void
+        public string Notes { get; set; } = string.Empty;
+        public string CurrencyCode { get; set; } = "USD";
+        public decimal ExchangeRate { get; set; } = 1.0m;
+        public ICollection<InvoiceItem> Items { get; set; } = new List<InvoiceItem>();
+    }
+
+    public class InvoiceItem : BaseEntity
+    {
+        public Guid InvoiceId { get; set; }
+        public Invoice? Invoice { get; set; }
+        public string Description { get; set; } = string.Empty;
+        public decimal Quantity { get; set; }
+        public decimal UnitPrice { get; set; }
+        public decimal Amount { get; set; }
+        public decimal TaxRate { get; set; }
+        public string ItemCode { get; set; } = string.Empty;
+    }
+
+    public class Bill : BaseEntity
+    {
+        public Guid VendorId { get; set; }
+        public Vendor? Vendor { get; set; }
+        public string BillNumber { get; set; } = string.Empty;
+        public DateTime BillDate { get; set; } = DateTime.Now;
+        public DateTime DueDate { get; set; }
+        public decimal Subtotal { get; set; }
+        public decimal TaxAmount { get; set; }
+        public decimal Total { get; set; }
+        public decimal PaidAmount { get; set; }
+        public decimal Balance { get; set; }
+        public string Status { get; set; } = "Draft"; // Draft, Received, Paid, Overdue, Void
+        public string Notes { get; set; } = string.Empty;
+        public string CurrencyCode { get; set; } = "USD";
+        public decimal ExchangeRate { get; set; } = 1.0m;
+        public ICollection<BillItem> Items { get; set; } = new List<BillItem>();
+    }
+
+    public class BillItem : BaseEntity
+    {
+        public Guid BillId { get; set; }
+        public Bill? Bill { get; set; }
+        public string Description { get; set; } = string.Empty;
+        public decimal Quantity { get; set; }
+        public decimal UnitPrice { get; set; }
+        public decimal Amount { get; set; }
+        public decimal TaxRate { get; set; }
+        public string ItemCode { get; set; } = string.Empty;
+    }
     public class Payment : BaseEntity { public Guid AccountId { get; set; } public decimal Amount { get; set; } }
     public class BankAccount : BaseEntity { public string AccountNumber { get; set; } = string.Empty; }
     public class BankTransaction : BaseEntity { public Guid BankAccountId { get; set; } public decimal Amount { get; set; } }

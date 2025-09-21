@@ -76,6 +76,9 @@ public partial class App : Application
         services.AddScoped<IReportingService, ReportingService>();
         services.AddSingleton<IThemeService, ThemeService>();
         services.AddScoped<IAuthenticationService, MockAuthenticationService>();
+        services.AddScoped<IRoleService, MockRoleService>();
+        services.AddScoped<IPasswordPolicyService, MockPasswordPolicyService>();
+        services.AddScoped<IAuditService, MockAuditService>();
         services.AddScoped<ERP_AI.Desktop.Services.INavigationService, NavigationService>();
         
         // Register ViewModels

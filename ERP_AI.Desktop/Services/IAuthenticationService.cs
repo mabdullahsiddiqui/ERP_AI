@@ -28,6 +28,12 @@ namespace ERP_AI.Desktop.Services
         Task<bool> UpdateProfileAsync(ProfileUpdateRequest request);
         Task<bool> ChangePasswordAsync(PasswordChangeRequest request);
         Task<bool> UpdateCompanyAsync(CompanyUpdateRequest request);
+        
+        // Enhanced User Profile Management
+        Task<UserProfileUpdateResponse> UpdateUserProfileAsync(UserProfileUpdateRequest request);
+        Task<ChangePasswordResponse> ChangeUserPasswordAsync(ChangePasswordRequest request);
+        Task<UserInfo?> GetCurrentUserAsync();
+        Task<bool> DeleteAccountAsync(string password);
 
         // Session Management
         Task<bool> SaveSessionAsync();

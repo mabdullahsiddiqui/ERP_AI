@@ -69,6 +69,12 @@ namespace ERP_AI.Desktop.Services
                     LastActivity = DateTime.Now
                 };
 
+                // Handle Remember Me functionality
+                if (request.RememberMe)
+                {
+                    await SaveSessionAsync();
+                }
+
                 AuthenticationStateChanged?.Invoke(this, CurrentState);
                 UserLoggedIn?.Invoke(this, user);
 
@@ -260,6 +266,104 @@ namespace ERP_AI.Desktop.Services
             CurrentState.IsOnline = !isOffline;
             AuthenticationStateChanged?.Invoke(this, CurrentState);
         }
+
+        public async Task<UserProfileUpdateResponse> UpdateUserProfileAsync(UserProfileUpdateRequest request)
+        {
+            await Task.Delay(1000); // Simulate API call
+            
+            if (CurrentUser != null)
+            {
+                var updatedUser = new UserInfo
+                {
+                    Id = CurrentUser.Id,
+                    FirstName = request.FirstName,
+                    LastName = request.LastName,
+                    Email = request.Email,
+                    CompanyId = CurrentUser.CompanyId,
+                    CompanyName = CurrentUser.CompanyName,
+                    Roles = CurrentUser.Roles,
+                    IsActive = CurrentUser.IsActive,
+                    LastLogin = CurrentUser.LastLogin,
+                    ProfileImage = CurrentUser.ProfileImage
+                };
+                
+                CurrentState.CurrentUser = updatedUser;
+                
+                return new UserProfileUpdateResponse
+                {
+                    Success = true,
+                    User = updatedUser
+                };
+            }
+            
+            return new UserProfileUpdateResponse
+            {
+                Success = false,
+                ErrorMessage = "User not found"
+            };
+        }
+
+        public async Task<ChangePasswordResponse> ChangeUserPasswordAsync(ChangePasswordRequest request)
+        {
+            await Task.Delay(1000); // Simulate API call
+            
+            // Mock validation - in real implementation, validate current password
+            if (string.IsNullOrWhiteSpace(request.CurrentPassword) || 
+                string.IsNullOrWhiteSpace(request.NewPassword))
+            {
+                return new ChangePasswordResponse
+                {
+                    Success = false,
+                    ErrorMessage = "Current password and new password are required"
+                };
+            }
+            
+            if (request.NewPassword.Length < 8)
+            {
+                return new ChangePasswordResponse
+                {
+                    Success = false,
+                    ErrorMessage = "New password must be at least 8 characters long"
+                };
+            }
+            
+            return new ChangePasswordResponse
+            {
+                Success = true,
+                PasswordChanged = true
+            };
+        }
+
+        public async Task<UserInfo?> GetCurrentUserAsync()
+        {
+            await Task.Delay(100); // Simulate API call
+            return CurrentUser;
+        }
+
+        public async Task<bool> DeleteAccountAsync(string password)
+        {
+            await Task.Delay(1000); // Simulate API call
+            
+            // Mock validation - in real implementation, validate password
+            if (string.IsNullOrWhiteSpace(password))
+            {
+                return false;
+            }
+            
+            // Simulate account deletion
+            CurrentState.CurrentUser = null;
+            CurrentState.CurrentCompany = null;
+            CurrentState.IsAuthenticated = false;
+            CurrentState.AccessToken = null;
+            CurrentState.RefreshToken = null;
+            CurrentState.TokenExpiresAt = null;
+            
+            // Fire logout event
+            UserLoggedOut?.Invoke(this, EventArgs.Empty);
+            
+            return true;
+        }
+
     }
 }
 

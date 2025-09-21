@@ -2,9 +2,6 @@ using System.Windows;
 
 namespace ERP_AI.Desktop.Views
 {
-    /// <summary>
-    /// Interaction logic for ModernMainWindow.xaml
-    /// </summary>
     public partial class ModernMainWindow : Window
     {
         public ModernMainWindow()

@@ -609,6 +609,200 @@ namespace ERP_AI.Desktop.Services
 
             AuthenticationStateChanged?.Invoke(this, CurrentState);
         }
+
+        public async Task<UserProfileUpdateResponse> UpdateUserProfileAsync(UserProfileUpdateRequest request)
+        {
+            try
+            {
+                _logger.LogInformation("Updating user profile for user: {UserId}", CurrentUser?.Id);
+
+                var json = JsonSerializer.Serialize(request);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                // Add authorization header
+                if (!string.IsNullOrEmpty(CurrentState.AccessToken))
+                {
+                    _httpClient.DefaultRequestHeaders.Authorization = 
+                        new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", CurrentState.AccessToken);
+                }
+
+                var response = await _httpClient.PutAsync("/api/auth/profile", content);
+                var responseContent = await response.Content.ReadAsStringAsync();
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = JsonSerializer.Deserialize<UserProfileUpdateResponse>(responseContent, new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    });
+
+                    if (result?.Success == true && result.User != null)
+                    {
+                        CurrentState.CurrentUser = result.User;
+                        AuthenticationStateChanged?.Invoke(this, CurrentState);
+                    }
+
+                    return result ?? new UserProfileUpdateResponse { Success = false, ErrorMessage = "Invalid response" };
+                }
+                else
+                {
+                    var errorResponse = JsonSerializer.Deserialize<Dictionary<string, object>>(responseContent);
+                    return new UserProfileUpdateResponse
+                    {
+                        Success = false,
+                        ErrorMessage = errorResponse?.ContainsKey("message") == true ? 
+                            errorResponse["message"].ToString() : "Failed to update profile"
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error updating user profile");
+                return new UserProfileUpdateResponse
+                {
+                    Success = false,
+                    ErrorMessage = "An error occurred while updating your profile. Please try again."
+                };
+            }
+        }
+
+        public async Task<ChangePasswordResponse> ChangeUserPasswordAsync(ChangePasswordRequest request)
+        {
+            try
+            {
+                _logger.LogInformation("Changing password for user: {UserId}", CurrentUser?.Id);
+
+                var json = JsonSerializer.Serialize(request);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                // Add authorization header
+                if (!string.IsNullOrEmpty(CurrentState.AccessToken))
+                {
+                    _httpClient.DefaultRequestHeaders.Authorization = 
+                        new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", CurrentState.AccessToken);
+                }
+
+                var response = await _httpClient.PostAsync("/api/auth/change-password", content);
+                var responseContent = await response.Content.ReadAsStringAsync();
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = JsonSerializer.Deserialize<ChangePasswordResponse>(responseContent, new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    });
+
+                    return result ?? new ChangePasswordResponse { Success = false, ErrorMessage = "Invalid response" };
+                }
+                else
+                {
+                    var errorResponse = JsonSerializer.Deserialize<Dictionary<string, object>>(responseContent);
+                    return new ChangePasswordResponse
+                    {
+                        Success = false,
+                        ErrorMessage = errorResponse?.ContainsKey("message") == true ? 
+                            errorResponse["message"].ToString() : "Failed to change password"
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error changing password");
+                return new ChangePasswordResponse
+                {
+                    Success = false,
+                    ErrorMessage = "An error occurred while changing your password. Please try again."
+                };
+            }
+        }
+
+        public async Task<UserInfo?> GetCurrentUserAsync()
+        {
+            try
+            {
+                if (CurrentUser != null)
+                {
+                    return CurrentUser;
+                }
+
+                // If no current user, try to get from API
+                if (!string.IsNullOrEmpty(CurrentState.AccessToken))
+                {
+                    _httpClient.DefaultRequestHeaders.Authorization = 
+                        new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", CurrentState.AccessToken);
+
+                    var response = await _httpClient.GetAsync("/api/auth/me");
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var content = await response.Content.ReadAsStringAsync();
+                        var user = JsonSerializer.Deserialize<UserInfo>(content, new JsonSerializerOptions
+                        {
+                            PropertyNameCaseInsensitive = true
+                        });
+
+                        if (user != null)
+                        {
+                            CurrentState.CurrentUser = user;
+                            AuthenticationStateChanged?.Invoke(this, CurrentState);
+                        }
+
+                        return user;
+                    }
+                }
+
+                return null;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error getting current user");
+                return null;
+            }
+        }
+
+        public async Task<bool> DeleteAccountAsync(string password)
+        {
+            try
+            {
+                _logger.LogInformation("Deleting account for user: {UserId}", CurrentUser?.Id);
+
+                var request = new { Password = password };
+                var json = JsonSerializer.Serialize(request);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                // Add authorization header
+                if (!string.IsNullOrEmpty(CurrentState.AccessToken))
+                {
+                    _httpClient.DefaultRequestHeaders.Authorization = 
+                        new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", CurrentState.AccessToken);
+                }
+
+                var response = await _httpClient.DeleteAsync("/api/auth/account");
+                var responseContent = await response.Content.ReadAsStringAsync();
+
+                if (response.IsSuccessStatusCode)
+                {
+                    // Clear current state
+                    CurrentState = new AuthState();
+                    AuthenticationStateChanged?.Invoke(this, CurrentState);
+                    UserLoggedOut?.Invoke(this, EventArgs.Empty);
+
+                    // Clear session
+                    await ClearSessionAsync();
+
+                    return true;
+                }
+                else
+                {
+                    _logger.LogWarning("Failed to delete account: {StatusCode}", response.StatusCode);
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error deleting account");
+                return false;
+            }
+        }
     }
 
     public class ApiResponse<T>

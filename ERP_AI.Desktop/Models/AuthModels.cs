@@ -63,6 +63,8 @@ namespace ERP_AI.Desktop.Models
         public string FirstName { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;
         public string FullName => $"{FirstName} {LastName}";
+        public string? PhoneNumber { get; set; }
+        public string? Company { get; set; }
         public string CompanyId { get; set; } = string.Empty;
         public string CompanyName { get; set; } = string.Empty;
         public List<string> Roles { get; set; } = new();
@@ -132,6 +134,53 @@ namespace ERP_AI.Desktop.Models
         public string Country { get; set; } = string.Empty;
         public string Currency { get; set; } = "USD";
         public string TimeZone { get; set; } = "UTC";
+    }
+
+    public class UserProfileUpdateRequest
+    {
+        [Required(ErrorMessage = "First Name is required")]
+        public string FirstName { get; set; } = string.Empty;
+        
+        [Required(ErrorMessage = "Last Name is required")]
+        public string LastName { get; set; } = string.Empty;
+        
+        [Required(ErrorMessage = "Email is required")]
+        [EmailAddress(ErrorMessage = "Invalid email format")]
+        public string Email { get; set; } = string.Empty;
+        
+        public string? PhoneNumber { get; set; }
+        public string? Company { get; set; }
+        public string Theme { get; set; } = "Light";
+        public string Language { get; set; } = "English";
+        public bool EmailNotifications { get; set; } = true;
+        public bool PushNotifications { get; set; } = true;
+        public bool SecurityAlerts { get; set; } = true;
+    }
+
+    public class ChangePasswordRequest
+    {
+        [Required(ErrorMessage = "Current password is required")]
+        public string CurrentPassword { get; set; } = string.Empty;
+        
+        [Required(ErrorMessage = "New password is required")]
+        [MinLength(8, ErrorMessage = "New password must be at least 8 characters")]
+        public string NewPassword { get; set; } = string.Empty;
+    }
+
+    public class BaseResponse
+    {
+        public bool Success { get; set; }
+        public string? ErrorMessage { get; set; }
+    }
+
+    public class UserProfileUpdateResponse : BaseResponse
+    {
+        public UserInfo? User { get; set; }
+    }
+
+    public class ChangePasswordResponse : BaseResponse
+    {
+        public bool PasswordChanged { get; set; }
     }
 }
 

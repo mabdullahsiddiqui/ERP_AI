@@ -1,11 +1,20 @@
 ﻿using System.Configuration;
 using System.Data;
+using System.IO;
 using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration.Json;
+using Microsoft.Extensions.Logging.Console;
+using Microsoft.Extensions.Logging.Debug;
+using Microsoft.Extensions.Http;
 using ERP_AI.Core;
 using ERP_AI.Data;
 using ERP_AI.Services;
 using ERP_AI.Desktop.Services;
+using ERP_AI.Desktop.Models;
+using ModernWpf;
 
 namespace ERP_AI.Desktop;
 
@@ -18,6 +27,9 @@ public partial class App : Application
     {
         base.OnStartup(e);
         
+        // Initialize ModernWpf theme
+        ThemeManager.Current.ApplicationTheme = ApplicationTheme.Light;
+        
         // Configure services
         var services = new ServiceCollection();
         ConfigureServices(services);
@@ -25,13 +37,34 @@ public partial class App : Application
         // Initialize ViewModelLocator
         ViewModelLocator.Init(services);
         
-        // Show Phase 5 dashboard for advanced features demo
-        var mainWindow = new Views.Phase5DashboardView();
-        mainWindow.Show();
+        // Show login window for authentication
+        var serviceProvider = services.BuildServiceProvider();
+        var loginView = new Views.LoginView(
+            serviceProvider.GetRequiredService<IAuthenticationService>(),
+            serviceProvider.GetRequiredService<ERP_AI.Desktop.Services.INavigationService>()
+        );
+        loginView.Show();
     }
     
     private void ConfigureServices(ServiceCollection services)
     {
+        // Add Configuration
+        var configuration = new ConfigurationBuilder()
+            .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+            .AddEnvironmentVariables()
+            .Build();
+        services.AddSingleton<IConfiguration>(configuration);
+
+        // Add Logging
+        services.AddLogging(builder =>
+        {
+            builder.AddConsole();
+            builder.AddDebug();
+        });
+
+        // Add HttpClient
+        services.AddHttpClient<IAuthenticationService, AuthenticationService>();
+
         // Register DbContext
         services.AddDbContext<ERPDbContext>();
         
@@ -42,6 +75,8 @@ public partial class App : Application
         services.AddScoped<IPdfService, PdfService>();
         services.AddScoped<IReportingService, ReportingService>();
         services.AddSingleton<IThemeService, ThemeService>();
+        services.AddScoped<IAuthenticationService, MockAuthenticationService>();
+        services.AddScoped<ERP_AI.Desktop.Services.INavigationService, NavigationService>();
         
         // Register ViewModels
         services.AddTransient<ViewModels.AccountListViewModel>();

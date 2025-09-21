@@ -4,7 +4,6 @@
     <ProjectReference Include="..\ERP_AI.Core\ERP_AI.Core.csproj" />
     <ProjectReference Include="..\ERP_AI.Data\ERP_AI.Data.csproj" />
     <ProjectReference Include="..\ERP_AI.Services\ERP_AI.Services.csproj" />
-    <ProjectReference Include="..\ERP_AI.CloudSync\ERP_AI.CloudSync.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -14,13 +13,20 @@
     <PackageReference Include="ExcelDataReader.DataSet" Version="3.7.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.9" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.9" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="9.0.9" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.9" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.9" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.9" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.9" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="9.0.9" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.9" />
     <PackageReference Include="ModernWpfUI" Version="0.9.6" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageReference Include="RestSharp" Version="112.1.0" />
     <PackageReference Include="Serilog" Version="4.3.0" />
     <PackageReference Include="FluentValidation" Version="11.7.2" />
+    <PackageReference Include="QuestPDF" Version="2024.12.4" />
+    <PackageReference Include="iTextSharp" Version="5.5.13.3" />
   </ItemGroup>
 
   <PropertyGroup>

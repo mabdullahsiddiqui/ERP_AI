@@ -1,0 +1,282 @@
+<Window x:Class="ERP_AI.Desktop.Views.ModernMainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ERP_AI.Desktop.Views"
+        xmlns:ui="http://schemas.modernwpf.com/2019"
+        mc:Ignorable="d"
+        Title="ERP_AI Desktop Pro" 
+        Height="800" 
+        Width="1400" 
+        MinHeight="600"
+        MinWidth="1000"
+        ResizeMode="CanResizeWithGrip" 
+        WindowStartupLocation="CenterScreen"
+        ui:WindowHelper.UseModernWindowStyle="True"
+        ui:ThemeManager.IsThemeAware="True">
+    
+    <Window.Resources>
+        <Style x:Key="ModernButtonStyle" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundAccentBrush}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="12,8"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                CornerRadius="4" 
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundAccentBrush}"/>
+                                <Setter Property="Opacity" Value="0.8"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundAccentBrush}"/>
+                                <Setter Property="Opacity" Value="0.6"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+        <Style x:Key="KpiCardStyle" TargetType="Border">
+            <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundBaseLowBrush}"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Padding" Value="16"/>
+            <Setter Property="Margin" Value="8"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect Color="Black" Opacity="0.1" BlurRadius="8" ShadowDepth="2"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Custom Title Bar -->
+        <Grid Grid.Row="0" Height="32" Background="{DynamicResource SystemControlBackgroundAccentBrush}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            
+            <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="12,0">
+                <TextBlock Text="ERP_AI Desktop Pro" 
+                          Foreground="White" 
+                          FontWeight="SemiBold" 
+                          VerticalAlignment="Center"/>
+                <TextBlock Text="v1.0" 
+                          Foreground="White" 
+                          Opacity="0.7" 
+                          Margin="8,0,0,0" 
+                          VerticalAlignment="Center"/>
+            </StackPanel>
+            
+            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                <Button Content="−" Width="46" Height="32" Background="Transparent" Foreground="White" 
+                        Click="Minimize_Click" BorderThickness="0"/>
+                <Button Content="□" Width="46" Height="32" Background="Transparent" Foreground="White" 
+                        Click="Maximize_Click" BorderThickness="0"/>
+                <Button Content="×" Width="46" Height="32" Background="Transparent" Foreground="White" 
+                        Click="Close_Click" BorderThickness="0"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- Ribbon Navigation -->
+        <TabControl Grid.Row="1" Margin="0,0,0,0">
+            <TabItem Header="Home">
+                <Grid Margin="16">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    
+                    <!-- Quick Access Toolbar -->
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,16">
+                        <Button Content="New Transaction" Style="{StaticResource ModernButtonStyle}" Margin="0,0,8,0"/>
+                        <Button Content="New Invoice" Style="{StaticResource ModernButtonStyle}" Margin="0,0,8,0"/>
+                        <Button Content="New Customer" Style="{StaticResource ModernButtonStyle}" Margin="0,0,8,0"/>
+                        <Separator Margin="16,0"/>
+                        <Button Content="Sync Now" Style="{StaticResource ModernButtonStyle}" Margin="0,0,8,0"/>
+                        <Button Content="Backup" Style="{StaticResource ModernButtonStyle}" Margin="0,0,8,0"/>
+                    </StackPanel>
+                    
+                    <!-- Financial KPIs -->
+                    <Grid Grid.Row="1" Margin="0,0,0,16">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <!-- Total Revenue -->
+                        <Border Grid.Column="0" Style="{StaticResource KpiCardStyle}">
+                            <StackPanel>
+                                <TextBlock Text="Total Revenue" FontSize="12" Opacity="0.7"/>
+                                <TextBlock Text="$125,430.50" FontSize="24" FontWeight="Bold" Foreground="Green"/>
+                                <TextBlock Text="+12.5% vs last month" FontSize="10" Foreground="Green"/>
+                            </StackPanel>
+                        </Border>
+                        
+                        <!-- Accounts Receivable -->
+                        <Border Grid.Column="1" Style="{StaticResource KpiCardStyle}">
+                            <StackPanel>
+                                <TextBlock Text="Accounts Receivable" FontSize="12" Opacity="0.7"/>
+                                <TextBlock Text="$45,230.00" FontSize="24" FontWeight="Bold" Foreground="Orange"/>
+                                <TextBlock Text="23 invoices pending" FontSize="10" Opacity="0.7"/>
+                            </StackPanel>
+                        </Border>
+                        
+                        <!-- Cash Balance -->
+                        <Border Grid.Column="2" Style="{StaticResource KpiCardStyle}">
+                            <StackPanel>
+                                <TextBlock Text="Cash Balance" FontSize="12" Opacity="0.7"/>
+                                <TextBlock Text="$78,900.25" FontSize="24" FontWeight="Bold" Foreground="Blue"/>
+                                <TextBlock Text="3 bank accounts" FontSize="10" Opacity="0.7"/>
+                            </StackPanel>
+                        </Border>
+                        
+                        <!-- Net Profit -->
+                        <Border Grid.Column="3" Style="{StaticResource KpiCardStyle}">
+                            <StackPanel>
+                                <TextBlock Text="Net Profit" FontSize="12" Opacity="0.7"/>
+                                <TextBlock Text="$32,150.75" FontSize="24" FontWeight="Bold" Foreground="Purple"/>
+                                <TextBlock Text="+8.2% vs last month" FontSize="10" Foreground="Green"/>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                    
+                    <!-- Main Dashboard Content -->
+                    <Grid Grid.Row="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <!-- Recent Transactions -->
+                        <Border Grid.Column="0" Style="{StaticResource KpiCardStyle}" Margin="0,0,8,0">
+                            <StackPanel>
+                                <TextBlock Text="Recent Transactions" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,12"/>
+                                <ListView Height="300" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                                    <ListViewItem>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="INV-001" Width="80" FontWeight="SemiBold"/>
+                                            <TextBlock Text="Customer Payment" Width="200" Margin="8,0"/>
+                                            <TextBlock Text="$1,250.00" Width="100" HorizontalAlignment="Right" Foreground="Green"/>
+                                            <TextBlock Text="2 hours ago" Width="100" HorizontalAlignment="Right" Opacity="0.7"/>
+                                        </StackPanel>
+                                    </ListViewItem>
+                                    <ListViewItem>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="EXP-002" Width="80" FontWeight="SemiBold"/>
+                                            <TextBlock Text="Office Supplies" Width="200" Margin="8,0"/>
+                                            <TextBlock Text="$89.50" Width="100" HorizontalAlignment="Right" Foreground="Red"/>
+                                            <TextBlock Text="4 hours ago" Width="100" HorizontalAlignment="Right" Opacity="0.7"/>
+                                        </StackPanel>
+                                    </ListViewItem>
+                                    <ListViewItem>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="INV-003" Width="80" FontWeight="SemiBold"/>
+                                            <TextBlock Text="Service Revenue" Width="200" Margin="8,0"/>
+                                            <TextBlock Text="$2,500.00" Width="100" HorizontalAlignment="Right" Foreground="Green"/>
+                                            <TextBlock Text="1 day ago" Width="100" HorizontalAlignment="Right" Opacity="0.7"/>
+                                        </StackPanel>
+                                    </ListViewItem>
+                                </ListView>
+                            </StackPanel>
+                        </Border>
+                        
+                        <!-- Quick Actions &amp; Alerts -->
+                        <StackPanel Grid.Column="1" Margin="8,0,0,0">
+                            <Border Style="{StaticResource KpiCardStyle}" Margin="0,0,0,8">
+                                <StackPanel>
+                                    <TextBlock Text="Quick Actions" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,12"/>
+                                    <Button Content="Create Invoice" Style="{StaticResource ModernButtonStyle}" Margin="0,0,0,8"/>
+                                    <Button Content="Record Payment" Style="{StaticResource ModernButtonStyle}" Margin="0,0,0,8"/>
+                                    <Button Content="Add Customer" Style="{StaticResource ModernButtonStyle}" Margin="0,0,0,8"/>
+                                    <Button Content="View Reports" Style="{StaticResource ModernButtonStyle}"/>
+                                </StackPanel>
+                            </Border>
+                            
+                            <Border Style="{StaticResource KpiCardStyle}">
+                                <StackPanel>
+                                    <TextBlock Text="Alerts &amp; Notifications" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,12"/>
+                                    <StackPanel>
+                                        <TextBlock Text="• 5 invoices overdue" FontSize="12" Foreground="Red" Margin="0,0,0,4"/>
+                                        <TextBlock Text="• 3 payments received" FontSize="12" Foreground="Green" Margin="0,0,0,4"/>
+                                        <TextBlock Text="• Sync completed" FontSize="12" Foreground="Blue" Margin="0,0,0,4"/>
+                                        <TextBlock Text="• Backup scheduled" FontSize="12" Opacity="0.7"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+            </TabItem>
+            
+            <TabItem Header="Accounting">
+                <Grid Margin="16">
+                    <TextBlock Text="Accounting Module" FontSize="24" FontWeight="Bold"/>
+                </Grid>
+            </TabItem>
+            
+            <TabItem Header="Customers">
+                <Grid Margin="16">
+                    <TextBlock Text="Customer Management" FontSize="24" FontWeight="Bold"/>
+                </Grid>
+            </TabItem>
+            
+            <TabItem Header="Reports">
+                <Grid Margin="16">
+                    <TextBlock Text="Reports &amp; Analytics" FontSize="24" FontWeight="Bold"/>
+                </Grid>
+            </TabItem>
+            
+            <TabItem Header="Settings">
+                <Grid Margin="16">
+                    <TextBlock Text="Settings &amp; Configuration" FontSize="24" FontWeight="Bold"/>
+                </Grid>
+            </TabItem>
+        </TabControl>
+
+        <!-- Status Bar -->
+        <Border Grid.Row="3" Background="{DynamicResource SystemControlBackgroundBaseLowBrush}" 
+                BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}" 
+                BorderThickness="0,1,0,0" Height="24">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                
+                <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="8,0">
+                    <TextBlock Text="Ready" VerticalAlignment="Center" Margin="0,0,16,0"/>
+                    <TextBlock Text="Last sync: 2 minutes ago" VerticalAlignment="Center" Opacity="0.7" Margin="0,0,16,0"/>
+                    <TextBlock Text="Database: Connected" VerticalAlignment="Center" Opacity="0.7"/>
+                </StackPanel>
+                
+                <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="8,0">
+                    <Ellipse Width="8" Height="8" Fill="Green" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                    <TextBlock Text="Online" VerticalAlignment="Center" Margin="0,0,16,0"/>
+                    <TextBlock Text="v1.0.0" VerticalAlignment="Center" Opacity="0.7"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

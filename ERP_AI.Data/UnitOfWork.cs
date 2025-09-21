@@ -14,7 +14,9 @@ namespace ERP_AI.Data
         IRepository<Customer> Customers { get; }
         IRepository<Vendor> Vendors { get; }
         IRepository<Invoice> Invoices { get; }
+        IRepository<InvoiceItem> InvoiceItems { get; }
         IRepository<Bill> Bills { get; }
+        IRepository<BillItem> BillItems { get; }
         IRepository<Payment> Payments { get; }
         IRepository<BankAccount> BankAccounts { get; }
         IRepository<BankTransaction> BankTransactions { get; }
@@ -23,6 +25,9 @@ namespace ERP_AI.Data
         IRepository<CloudMapping> CloudMappings { get; }
         IRepository<SyncQueue> SyncQueues { get; }
         IRepository<SyncSettings> SyncSettings { get; }
+        IRepository<SyncStatusTracker> SyncStatusTrackers { get; }
+        IRepository<ChangeTracker> ChangeTrackers { get; }
+        IRepository<TombstoneRecord> TombstoneRecords { get; }
         Task<int> SaveChangesAsync();
     }
 
@@ -37,7 +42,9 @@ namespace ERP_AI.Data
         public IRepository<Customer> Customers { get; }
         public IRepository<Vendor> Vendors { get; }
         public IRepository<Invoice> Invoices { get; }
+        public IRepository<InvoiceItem> InvoiceItems { get; }
         public IRepository<Bill> Bills { get; }
+        public IRepository<BillItem> BillItems { get; }
         public IRepository<Payment> Payments { get; }
         public IRepository<BankAccount> BankAccounts { get; }
         public IRepository<BankTransaction> BankTransactions { get; }
@@ -46,6 +53,9 @@ namespace ERP_AI.Data
         public IRepository<CloudMapping> CloudMappings { get; }
         public IRepository<SyncQueue> SyncQueues { get; }
         public IRepository<SyncSettings> SyncSettings { get; }
+        public IRepository<SyncStatusTracker> SyncStatusTrackers { get; }
+        public IRepository<ChangeTracker> ChangeTrackers { get; }
+        public IRepository<TombstoneRecord> TombstoneRecords { get; }
 
         public UnitOfWork(ERPDbContext context)
         {
@@ -58,7 +68,9 @@ namespace ERP_AI.Data
             Customers = new Repository<Customer>(context);
             Vendors = new Repository<Vendor>(context);
             Invoices = new Repository<Invoice>(context);
+            InvoiceItems = new Repository<InvoiceItem>(context);
             Bills = new Repository<Bill>(context);
+            BillItems = new Repository<BillItem>(context);
             Payments = new Repository<Payment>(context);
             BankAccounts = new Repository<BankAccount>(context);
             BankTransactions = new Repository<BankTransaction>(context);
@@ -67,6 +79,9 @@ namespace ERP_AI.Data
             CloudMappings = new Repository<CloudMapping>(context);
             SyncQueues = new Repository<SyncQueue>(context);
             SyncSettings = new Repository<SyncSettings>(context);
+            SyncStatusTrackers = new Repository<SyncStatusTracker>(context);
+            ChangeTrackers = new Repository<ChangeTracker>(context);
+            TombstoneRecords = new Repository<TombstoneRecord>(context);
         }
 
         public async Task<int> SaveChangesAsync() => await _context.SaveChangesAsync();

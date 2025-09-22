@@ -35,8 +35,13 @@ namespace ERP_AI.Desktop.Views
             // Check connection status
             _ = Task.Run(CheckConnectionAsync);
 
-            // Set focus to email field
-            Loaded += (s, e) => EmailTextBox.Focus();
+            // Set focus to email field and pre-populate password
+            Loaded += (s, e) => 
+            {
+                EmailTextBox.Focus();
+                PasswordBox.Password = "password123";
+                LoginCommand.NotifyCanExecuteChanged();
+            };
             
             // Add password change handler
             PasswordBox.PasswordChanged += (s, e) => LoginCommand.NotifyCanExecuteChanged();
@@ -44,7 +49,7 @@ namespace ERP_AI.Desktop.Views
 
         #region Properties
 
-        private string _email = string.Empty;
+        private string _email = "admin@erpai.com";
         public string Email
         {
             get => _email;
@@ -351,7 +356,7 @@ namespace ERP_AI.Desktop.Views
         private void FillDemoCredentials_Click(object sender, RoutedEventArgs e)
         {
             Email = "admin@erpai.com";
-            PasswordBox.Password = "Admin123!";
+            PasswordBox.Password = "password123";
             RememberMe = true;
             
             // Clear any existing errors

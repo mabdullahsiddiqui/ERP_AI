@@ -301,7 +301,7 @@
                                     BorderThickness="1" 
                                     CornerRadius="4" 
                                     Padding="8,4">
-                                <TextBlock Text="Admin123!" 
+                                <TextBlock Text="password123" 
                                           FontFamily="Consolas" 
                                           FontSize="11" 
                                           Foreground="#0c4a6e"/>

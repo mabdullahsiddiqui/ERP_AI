@@ -347,7 +347,7 @@ namespace ERP_AI.CloudAPI.Services
                     EntityType = l.EntityType,
                     EntityId = l.EntityId.ToString(),
                     Operation = Enum.Parse<SyncOperation>(l.Operation),
-                    Status = Enum.Parse<EntitySyncStatus>(l.Status)
+                    Status = (ERP_AI.CloudAPI.Models.EntitySyncStatus)Enum.Parse(typeof(ERP_AI.CloudAPI.Models.EntitySyncStatus), l.Status)
                 })
                 .ToListAsync();
 

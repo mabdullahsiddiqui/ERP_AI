@@ -68,5 +68,40 @@ namespace ERP_AI.CloudAPI.Services
         /// Validate and decode JWT token
         /// </summary>
         Task<UserInfo?> ValidateJwtTokenAsync(string token);
+
+        /// <summary>
+        /// Get all users for a company
+        /// </summary>
+        Task<List<UserInfo>> GetUsersAsync(string companyId, int page = 1, int pageSize = 10);
+
+        /// <summary>
+        /// Get user by ID
+        /// </summary>
+        Task<UserInfo?> GetUserByIdAsync(string userId);
+
+        /// <summary>
+        /// Create new user
+        /// </summary>
+        Task<UserInfo> CreateUserAsync(RegisterRequest request, string companyId);
+
+        /// <summary>
+        /// Update user information
+        /// </summary>
+        Task<UserInfo> UpdateUserAsync(string userId, RegisterRequest request);
+
+        /// <summary>
+        /// Delete user
+        /// </summary>
+        Task<bool> DeleteUserAsync(string userId);
+
+        /// <summary>
+        /// Reset user password
+        /// </summary>
+        Task<bool> ResetPasswordAsync(string userId, string newPassword);
+
+        /// <summary>
+        /// Get audit logs
+        /// </summary>
+        Task<List<AuditLog>> GetAuditLogsAsync(string? userId = null, string? eventType = null, DateTime? fromDate = null, DateTime? toDate = null);
     }
 }

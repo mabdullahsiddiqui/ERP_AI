@@ -429,5 +429,173 @@ namespace ERP_AI.CloudAPI.Services
             rng.GetBytes(randomBytes);
             return $"erpai_{Convert.ToBase64String(randomBytes).Replace("+", "").Replace("/", "").Replace("=", "")}";
         }
+
+        public async Task<List<UserInfo>> GetUsersAsync(string companyId, int page = 1, int pageSize = 10)
+        {
+            var users = await _context.Users
+                .Where(u => u.CompanyId.ToString() == companyId)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .Select(u => new UserInfo
+                {
+                    Id = u.Id.ToString(),
+                    Email = u.Email,
+                    FirstName = u.FirstName,
+                    LastName = u.LastName,
+                    CompanyId = u.CompanyId.ToString(),
+                    CompanyName = u.Company != null ? u.Company.Name : string.Empty,
+                    Roles = new List<string> { u.Role },
+                    IsActive = u.IsActive,
+                    LastLogin = u.LastLogin
+                })
+                .ToListAsync();
+
+            return users;
+        }
+
+        public async Task<UserInfo?> GetUserByIdAsync(string userId)
+        {
+            var user = await _context.Users
+                .Include(u => u.Company)
+                .FirstOrDefaultAsync(u => u.Id.ToString() == userId);
+
+            if (user == null) return null;
+
+            return new UserInfo
+            {
+                Id = user.Id.ToString(),
+                Email = user.Email,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                CompanyId = user.CompanyId.ToString(),
+                CompanyName = user.Company?.Name ?? string.Empty,
+                Roles = new List<string> { user.Role },
+                IsActive = user.IsActive,
+                LastLogin = user.LastLogin
+            };
+        }
+
+        public async Task<UserInfo> CreateUserAsync(RegisterRequest request, string companyId)
+        {
+            var company = await _context.Companies.FindAsync(Guid.Parse(companyId));
+            if (company == null)
+                throw new ArgumentException("Company not found");
+
+            var user = new User
+            {
+                Id = Guid.NewGuid(),
+                Username = request.Email,
+                Email = request.Email,
+                FirstName = request.FirstName,
+                LastName = request.LastName,
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password),
+                CompanyId = Guid.Parse(companyId),
+                Role = "User",
+                IsActive = true,
+                LastLogin = DateTime.UtcNow,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
+            };
+
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
+
+            return new UserInfo
+            {
+                Id = user.Id.ToString(),
+                Email = user.Email,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                CompanyId = user.CompanyId.ToString(),
+                CompanyName = company.Name,
+                Roles = new List<string> { user.Role },
+                IsActive = user.IsActive,
+                LastLogin = user.LastLogin
+            };
+        }
+
+        public async Task<UserInfo> UpdateUserAsync(string userId, RegisterRequest request)
+        {
+            var user = await _context.Users
+                .Include(u => u.Company)
+                .FirstOrDefaultAsync(u => u.Id.ToString() == userId);
+
+            if (user == null)
+                throw new ArgumentException("User not found");
+
+            user.Email = request.Email;
+            user.FirstName = request.FirstName;
+            user.LastName = request.LastName;
+            user.Username = request.Email;
+            user.UpdatedAt = DateTime.UtcNow;
+
+            if (!string.IsNullOrEmpty(request.Password))
+            {
+                user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password);
+            }
+
+            await _context.SaveChangesAsync();
+
+            return new UserInfo
+            {
+                Id = user.Id.ToString(),
+                Email = user.Email,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                CompanyId = user.CompanyId.ToString(),
+                CompanyName = user.Company?.Name ?? string.Empty,
+                Roles = new List<string> { user.Role },
+                IsActive = user.IsActive,
+                LastLogin = user.LastLogin
+            };
+        }
+
+        public async Task<bool> DeleteUserAsync(string userId)
+        {
+            var user = await _context.Users.FindAsync(Guid.Parse(userId));
+            if (user == null) return false;
+
+            _context.Users.Remove(user);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> ResetPasswordAsync(string userId, string newPassword)
+        {
+            var user = await _context.Users.FindAsync(Guid.Parse(userId));
+            if (user == null) return false;
+
+            user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(newPassword);
+            user.UpdatedAt = DateTime.UtcNow;
+
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<List<AuditLog>> GetAuditLogsAsync(string? userId = null, string? eventType = null, DateTime? fromDate = null, DateTime? toDate = null)
+        {
+            // This is a mock implementation - in a real application, you would have an AuditLog table
+            var logs = new List<AuditLog>();
+
+            if (!string.IsNullOrEmpty(userId))
+            {
+                var user = await _context.Users.FindAsync(Guid.Parse(userId));
+                if (user != null)
+                {
+                    logs.Add(new AuditLog
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        UserId = userId,
+                        UserEmail = user.Email,
+                        EventType = "User Login",
+                        Description = "User logged in successfully",
+                        Timestamp = DateTime.UtcNow,
+                        CompanyId = user.CompanyId.ToString()
+                    });
+                }
+            }
+
+            return logs;
+        }
     }
 }

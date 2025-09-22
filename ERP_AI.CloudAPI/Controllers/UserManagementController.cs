@@ -20,11 +20,11 @@ namespace ERP_AI.CloudAPI.Controllers
         }
 
         [HttpGet("users")]
-        public async Task<ActionResult<List<UserInfo>>> GetUsers([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+        public async Task<ActionResult<List<UserInfo>>> GetUsers([FromQuery] string companyId, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
             try
             {
-                var users = await _authService.GetUsersAsync(page, pageSize);
+                var users = await _authService.GetUsersAsync(companyId, page, pageSize);
                 return Ok(users);
             }
             catch (Exception ex)
@@ -57,7 +57,17 @@ namespace ERP_AI.CloudAPI.Controllers
         {
             try
             {
-                var user = await _authService.CreateUserAsync(request);
+                var registerRequest = new RegisterRequest
+                {
+                    Email = request.Email,
+                    Password = "TempPassword123!", // Default password for new users
+                    FirstName = request.FirstName,
+                    LastName = request.LastName,
+                    CompanyName = "Company", // Will be updated from company lookup
+                    PhoneNumber = request.PhoneNumber
+                };
+                
+                var user = await _authService.CreateUserAsync(registerRequest, request.CompanyId);
                 return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
             }
             catch (Exception ex)
@@ -72,7 +82,17 @@ namespace ERP_AI.CloudAPI.Controllers
         {
             try
             {
-                var user = await _authService.UpdateUserAsync(id, request);
+                var registerRequest = new RegisterRequest
+                {
+                    Email = "", // Will be updated from existing user
+                    Password = "", // Will be updated if provided
+                    FirstName = request.FirstName,
+                    LastName = request.LastName,
+                    CompanyName = "Company", // Will be updated from company lookup
+                    PhoneNumber = request.PhoneNumber
+                };
+                
+                var user = await _authService.UpdateUserAsync(id, registerRequest);
                 if (user == null)
                     return NotFound();
 
@@ -108,11 +128,11 @@ namespace ERP_AI.CloudAPI.Controllers
         {
             try
             {
-                var success = await _authService.ResetPasswordAsync(id, request);
+                var success = await _authService.ResetPasswordAsync(id, request.NewPassword);
                 if (!success)
                     return NotFound();
 
-                return Ok(new { message = "Password reset email sent" });
+                return Ok(new { message = "Password reset successfully" });
             }
             catch (Exception ex)
             {

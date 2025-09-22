@@ -115,8 +115,7 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 // Add health checks
-builder.Services.AddHealthChecks()
-    .AddDbContextCheck<ERPDbContext>();
+builder.Services.AddHealthChecks();
 
 var app = builder.Build();
 

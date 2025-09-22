@@ -4,8 +4,30 @@ using System.Collections.Generic;
 
 namespace ERP_AI.Data
 {
-    public class Company : BaseEntity { public string Name { get; set; } = string.Empty; }
-    public class User : BaseEntity { public string Username { get; set; } = string.Empty; }
+    public class Company : BaseEntity 
+    { 
+        public string Name { get; set; } = string.Empty;
+        public string Industry { get; set; } = string.Empty;
+        public string Country { get; set; } = string.Empty;
+        public string Currency { get; set; } = "USD";
+        public string TimeZone { get; set; } = "UTC";
+        public bool IsActive { get; set; } = true;
+        public string SubscriptionPlan { get; set; } = "Free";
+    }
+    
+    public class User : BaseEntity 
+    { 
+        public string Username { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
+        public string FirstName { get; set; } = string.Empty;
+        public string LastName { get; set; } = string.Empty;
+        public string PasswordHash { get; set; } = string.Empty;
+        public Guid CompanyId { get; set; }
+        public Company? Company { get; set; }
+        public string Role { get; set; } = "User";
+        public bool IsActive { get; set; } = true;
+        public DateTime LastLogin { get; set; }
+    }
     public enum AccountType { Asset, Liability, Equity, Revenue, Expense }
 
     public class Account : BaseEntity

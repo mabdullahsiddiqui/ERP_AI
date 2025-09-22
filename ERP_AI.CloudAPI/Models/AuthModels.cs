@@ -105,4 +105,73 @@ namespace ERP_AI.CloudAPI.Models
         public int UserCount { get; set; }
         public string SubscriptionPlan { get; set; } = "Free";
     }
+
+    public class AuditLog
+    {
+        public string Id { get; set; } = string.Empty;
+        public string UserId { get; set; } = string.Empty;
+        public string UserEmail { get; set; } = string.Empty;
+        public string EventType { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
+        public string? EntityType { get; set; }
+        public string? EntityId { get; set; }
+        public string? OldValues { get; set; }
+        public string? NewValues { get; set; }
+        public string IpAddress { get; set; } = string.Empty;
+        public string UserAgent { get; set; } = string.Empty;
+        public DateTime Timestamp { get; set; }
+        public string CompanyId { get; set; } = string.Empty;
+    }
+
+    public class CreateUserRequest
+    {
+        [Required]
+        [EmailAddress]
+        public string Email { get; set; } = string.Empty;
+        
+        [Required]
+        [MinLength(6)]
+        public string Password { get; set; } = string.Empty;
+        
+        [Required]
+        public string FirstName { get; set; } = string.Empty;
+        
+        [Required]
+        public string LastName { get; set; } = string.Empty;
+        
+        [Required]
+        public string CompanyId { get; set; } = string.Empty;
+        
+        [Required]
+        public string CompanyName { get; set; } = string.Empty;
+        
+        public string? PhoneNumber { get; set; }
+    }
+
+    public class UpdateUserRequest
+    {
+        [Required]
+        [EmailAddress]
+        public string Email { get; set; } = string.Empty;
+        
+        public string? Password { get; set; }
+        
+        [Required]
+        public string FirstName { get; set; } = string.Empty;
+        
+        [Required]
+        public string LastName { get; set; } = string.Empty;
+        
+        [Required]
+        public string CompanyName { get; set; } = string.Empty;
+        
+        public string? PhoneNumber { get; set; }
+    }
+
+    public class ResetPasswordRequest
+    {
+        [Required]
+        [MinLength(6)]
+        public string NewPassword { get; set; } = string.Empty;
+    }
 }

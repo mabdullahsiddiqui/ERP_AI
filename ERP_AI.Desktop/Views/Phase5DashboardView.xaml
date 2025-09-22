@@ -124,11 +124,12 @@
         <StackPanel Grid.Column="1" Orientation="Horizontal">
             <Button Content="📊 Reports" Margin="0,0,8,0" Background="#6F42C1" Click="OpenReports_Click"/>
             <Button Content="👤 Profile" Margin="0,0,8,0" Background="#20C997" Click="OpenProfile_Click"/>
-            <Button Content="👥 Users" Margin="0,0,8,0" Background="#E83E8C" Click="OpenUserManagement_Click"/>
-            <Button Content="⚙️ Settings" Margin="0,0,8,0" Background="#6C757D" Click="OpenSettings_Click"/>
-            <Button Content="Run Tests" Margin="0,0,8,0" Background="#28A745" Click="RunTests_Click"/>
-            <Button Content="Performance" Margin="0,0,8,0" Background="#FFC107" Foreground="Black" Click="Performance_Click"/>
-            <Button Content="Export Report" Background="#17A2B8" Click="ExportReport_Click"/>
+                <Button Content="👥 Users" Margin="0,0,8,0" Background="#E83E8C" Click="OpenUserManagement_Click"/>
+                <Button Content="🔗 Integration" Margin="0,0,8,0" Background="#8E44AD" Click="OpenIntegration_Click"/>
+                <Button Content="⚙️ Settings" Margin="0,0,8,0" Background="#6C757D" Click="OpenSettings_Click"/>
+                <Button Content="Run Tests" Margin="0,0,8,0" Background="#28A745" Click="RunTests_Click"/>
+                <Button Content="Performance" Margin="0,0,8,0" Background="#FFC107" Foreground="Black" Click="Performance_Click"/>
+                <Button Content="Export Report" Background="#17A2B8" Click="ExportReport_Click"/>
         </StackPanel>
             </Grid>
         </Border>

@@ -53,6 +53,7 @@ namespace ERP_AI.Desktop.Models
         public string RefreshToken { get; set; } = string.Empty;
         public DateTime ExpiresAt { get; set; }
         public UserInfo User { get; set; } = new();
+        public CompanyInfo? Company { get; set; }
         public string? ErrorMessage { get; set; }
     }
 

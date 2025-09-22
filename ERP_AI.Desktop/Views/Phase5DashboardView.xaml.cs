@@ -12,6 +12,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Microsoft.Extensions.DependencyInjection;
+using ERP_AI.Desktop.Services;
 
 namespace ERP_AI.Desktop.Views
 {
@@ -221,6 +223,32 @@ namespace ERP_AI.Desktop.Views
         private void OpenUserManagement_Click(object sender, RoutedEventArgs e)
         {
             OpenUserManagementView();
+        }
+
+        private void OpenIntegration_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                // Get services from the application's service provider
+                var serviceProvider = ((App)Application.Current).ServiceProvider;
+                var integrationService = serviceProvider.GetRequiredService<IIntegrationService>();
+                var syncService = serviceProvider.GetRequiredService<IDataSyncService>();
+                var errorService = serviceProvider.GetRequiredService<IErrorHandlingService>();
+                var authService = serviceProvider.GetRequiredService<IAuthenticationService>();
+
+                var integrationView = new Phase7IntegrationView(
+                    integrationService, 
+                    syncService, 
+                    errorService, 
+                    authService);
+                integrationView.Show();
+                
+                AppendStatusMessage("   - Phase 7 Integration view opened successfully");
+            }
+            catch (Exception ex)
+            {
+                AppendStatusMessage($"   - Error opening Integration view: {ex.Message}");
+            }
         }
 
         private void RunTests_Click(object sender, RoutedEventArgs e)

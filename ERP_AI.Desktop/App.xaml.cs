@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration.Json;
 using Microsoft.Extensions.Logging.Console;
 using Microsoft.Extensions.Logging.Debug;
 using Microsoft.Extensions.Http;
+using Microsoft.EntityFrameworkCore;
 using ERP_AI.Core;
 using ERP_AI.Data;
 using ERP_AI.Services;
@@ -23,6 +24,8 @@ namespace ERP_AI.Desktop;
 /// </summary>
 public partial class App : Application
 {
+    public IServiceProvider ServiceProvider { get; private set; } = null!;
+
     protected override void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
@@ -38,10 +41,18 @@ public partial class App : Application
         ViewModelLocator.Init(services);
         
         // Show login window for authentication
-        var serviceProvider = services.BuildServiceProvider();
+        ServiceProvider = services.BuildServiceProvider();
+        
+        // Initialize database
+        using (var scope = ServiceProvider.CreateScope())
+        {
+            var context = scope.ServiceProvider.GetRequiredService<ERPDbContext>();
+            context.Database.EnsureCreated();
+        }
+        
         var loginView = new Views.LoginView(
-            serviceProvider.GetRequiredService<IAuthenticationService>(),
-            serviceProvider.GetRequiredService<ERP_AI.Desktop.Services.INavigationService>()
+            ServiceProvider.GetRequiredService<IAuthenticationService>(),
+            ServiceProvider.GetRequiredService<ERP_AI.Desktop.Services.INavigationService>()
         );
         loginView.Show();
     }
@@ -63,19 +74,29 @@ public partial class App : Application
         });
 
         // Add HttpClient
-        services.AddHttpClient<IAuthenticationService, AuthenticationService>();
+        services.AddHttpClient();
+        services.AddHttpClient<IAuthenticationService, RealAuthenticationService>();
+        services.AddHttpClient<IDataSyncService, DataSyncService>();
 
         // Register DbContext
-        services.AddDbContext<ERPDbContext>();
+        services.AddDbContext<ERPDbContext>(options =>
+            options.UseSqlite(configuration.GetConnectionString("DefaultConnection")));
         
         // Register Unit of Work
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         
-        // Register Services
+        // Register Core Services
         services.AddScoped<IPdfService, PdfService>();
         services.AddScoped<IReportingService, ReportingService>();
         services.AddSingleton<IThemeService, ThemeService>();
+        
+        // Register Authentication & Integration Services
         services.AddScoped<IAuthenticationService, MockAuthenticationService>();
+        services.AddScoped<IDataSyncService, DataSyncService>();
+        services.AddScoped<IErrorHandlingService, ErrorHandlingService>();
+        services.AddScoped<IIntegrationService, IntegrationService>();
+        
+        // Register User Management Services
         services.AddScoped<IRoleService, MockRoleService>();
         services.AddScoped<IPasswordPolicyService, MockPasswordPolicyService>();
         services.AddScoped<IAuditService, MockAuditService>();

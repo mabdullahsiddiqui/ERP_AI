@@ -30,6 +30,8 @@ namespace ERP_AI.Data
     {
         public Guid ForecastId { get; set; }
         public CashFlowForecast Forecast { get; set; } = null!;
+        public Guid? ScenarioId { get; set; }
+        public CashFlowScenario? Scenario { get; set; }
         public DateTime ProjectionDate { get; set; }
         public string Category { get; set; } = string.Empty; // Operating, Investing, Financing
         public string SubCategory { get; set; } = string.Empty; // Sales, Purchases, Loans, etc.
@@ -160,6 +162,8 @@ namespace ERP_AI.Data
     {
         public Guid PlanId { get; set; }
         public LiquidityPlan Plan { get; set; } = null!;
+        public Guid? ScenarioId { get; set; }
+        public LiquidityScenario? Scenario { get; set; }
         public string ActionType { get; set; } = string.Empty; // Increase, Decrease, Maintain
         public string Category { get; set; } = string.Empty; // Revenue, Expenses, Financing, Investment
         public string Description { get; set; } = string.Empty;

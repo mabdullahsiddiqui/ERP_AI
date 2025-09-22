@@ -87,7 +87,10 @@ namespace ERP_AI.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite("Data Source=erp_ai.db;Mode=ReadWriteCreate;Cache=Shared;Journal Mode=WAL");
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseSqlite("Data Source=erp_ai.db;Cache=Shared");
+            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -111,6 +114,33 @@ namespace ERP_AI.Data
 
             // Full-text search setup (SQLite FTS5)
             // Example: modelBuilder.Entity<Account>().ToTable("Accounts", b => b.ExcludeFromMigrations());
+
+            // Configure CashFlowDependency relationships to avoid circular reference
+            modelBuilder.Entity<CashFlowDependency>()
+                .HasOne(d => d.Projection)
+                .WithMany(p => p.Dependencies)
+                .HasForeignKey(d => d.ProjectionId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<CashFlowDependency>()
+                .HasOne(d => d.DependentProjection)
+                .WithMany()
+                .HasForeignKey(d => d.DependentProjectionId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Configure CashFlowScenario-Projection relationship
+            modelBuilder.Entity<CashFlowProjection>()
+                .HasOne(p => p.Scenario)
+                .WithMany(s => s.Projections)
+                .HasForeignKey(p => p.ScenarioId)
+                .OnDelete(DeleteBehavior.SetNull);
+
+            // Configure LiquidityAction-Scenario relationship
+            modelBuilder.Entity<LiquidityAction>()
+                .HasOne(a => a.Scenario)
+                .WithMany(s => s.Actions)
+                .HasForeignKey(a => a.ScenarioId)
+                .OnDelete(DeleteBehavior.SetNull);
 
             // Seed data for chart of accounts
             modelBuilder.Entity<Account>().HasData(new Account { Id = Guid.NewGuid(), Code = "1000", Name = "Cash" });

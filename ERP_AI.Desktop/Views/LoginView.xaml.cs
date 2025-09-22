@@ -351,22 +351,6 @@ namespace ERP_AI.Desktop.Views
 
         #endregion
 
-        #region Demo Credentials
-
-        private void FillDemoCredentials_Click(object sender, RoutedEventArgs e)
-        {
-            Email = "admin@erpai.com";
-            PasswordBox.Password = "password123";
-            RememberMe = true;
-            
-            // Clear any existing errors
-            ClearErrors();
-            
-            // Notify that login command can now execute
-            LoginCommand.NotifyCanExecuteChanged();
-        }
-
-        #endregion
 
         #region Cleanup
 

@@ -5,7 +5,7 @@
         xmlns:converters="clr-namespace:ERP_AI.Desktop.Converters"
         Title="ERP AI - Login"
         Width="450"
-        Height="750"
+        Height="600"
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize"
         ui:WindowHelper.UseModernWindowStyle="True">
@@ -242,85 +242,6 @@
                        HorizontalAlignment="Center"
                        Margin="0,10,0,0"/>
             </StackPanel>
-
-            <!-- Demo Credentials Section -->
-            <Border Background="#f0f9ff" 
-                    BorderBrush="#0ea5e9" 
-                    BorderThickness="1" 
-                    CornerRadius="8" 
-                    Margin="0,30,0,0" 
-                    Padding="20">
-                <StackPanel>
-                    <TextBlock Text="Demo Credentials" 
-                              FontWeight="Bold" 
-                              FontSize="16" 
-                              Foreground="#0c4a6e" 
-                              HorizontalAlignment="Center" 
-                              Margin="0,0,0,10"/>
-                    
-                    <TextBlock Text="For testing purposes, use these credentials:" 
-                              FontSize="12" 
-                              Foreground="#0c4a6e" 
-                              HorizontalAlignment="Center" 
-                              Margin="0,0,0,15"/>
-                    
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        
-                        <!-- Email Credential -->
-                        <StackPanel Grid.Column="0" Margin="0,0,10,0">
-                            <TextBlock Text="Email:" 
-                                      FontWeight="SemiBold" 
-                                      FontSize="12" 
-                                      Foreground="#0c4a6e" 
-                                      Margin="0,0,0,5"/>
-                            <Border Background="White" 
-                                    BorderBrush="#0ea5e9" 
-                                    BorderThickness="1" 
-                                    CornerRadius="4" 
-                                    Padding="8,4">
-                                <TextBlock Text="admin@erpai.com" 
-                                          FontFamily="Consolas" 
-                                          FontSize="11" 
-                                          Foreground="#0c4a6e"/>
-                            </Border>
-                        </StackPanel>
-                        
-                        <!-- Password Credential -->
-                        <StackPanel Grid.Column="1" Margin="10,0,0,0">
-                            <TextBlock Text="Password:" 
-                                      FontWeight="SemiBold" 
-                                      FontSize="12" 
-                                      Foreground="#0c4a6e" 
-                                      Margin="0,0,0,5"/>
-                            <Border Background="White" 
-                                    BorderBrush="#0ea5e9" 
-                                    BorderThickness="1" 
-                                    CornerRadius="4" 
-                                    Padding="8,4">
-                                <TextBlock Text="password123" 
-                                          FontFamily="Consolas" 
-                                          FontSize="11" 
-                                          Foreground="#0c4a6e"/>
-                            </Border>
-                        </StackPanel>
-                    </Grid>
-                    
-                    <Button Content="Fill Demo Credentials" 
-                           Background="#0ea5e9" 
-                           Foreground="White" 
-                           BorderThickness="0" 
-                           Padding="12,6" 
-                           FontSize="12" 
-                           FontWeight="SemiBold" 
-                           HorizontalAlignment="Center" 
-                           Margin="0,15,0,0" 
-                           Click="FillDemoCredentials_Click"/>
-                </StackPanel>
-            </Border>
         </StackPanel>
 
         <!-- Status Bar -->
